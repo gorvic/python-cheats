@@ -1,0 +1,515 @@
+Cheat Sheet
+
+
+------------------------
+# Datetime & time
+------------------------
+
+## Core datetime
+
+datetime.now(tz=None) - Return current local date and time as datetime. If tz is provided, return current time in the given timezone. Preferred method.
+datetime.today() - Return current local date and time as datetime. Equivalent to datetime.now() without timezone support. Legacy.
+datetime.date() - Return a date object (date only, no time).
+datetime.time() - Return a time object (time only, no date).
+datetime.combine(date, time) - Combine date and time objects into a datetime.
+datetime(year, month, day, hour=0, minute=0, second=0, microsecond=0) - Create a datetime object with specified values.
+datetime.weekday() - Return day of week as integer, Monday=0 ... Sunday=6.
+
+## Timestamp
+
+datetime.timestamp() - Return POSIX timestamp (seconds since epoch).
+datetime.fromtimestamp(ts) - Convert timestamp to local datetime.
+datetime.utcfromtimestamp(ts) - Convert timestamp to UTC datetime.
+
+## Parsing & formatting
+
+datetime.strftime(format) - Format datetime as string according to format codes.
+datetime.strptime(string, format) - Parse string into datetime using format codes.
+
+## Time zones
+
+datetime.astimezone(tz) - Convert datetime to another timezone.
+datetime.replace(tzinfo=tz) - Assign timezone without conversion.
+datetime.now(tz) - Return current datetime with timezone.
+datetime.isoformat() - Return ISO 8601 string including timezone if present.
+
+## ISO 8601
+
+datetime.isoformat() - Return ISO 8601 formatted string including timezone if present.
+datetime.fromisoformat(string) - Parse ISO 8601 string into datetime.
+datetime.isoweekday() - Return ISO weekday number, Monday=1 ... Sunday=7.
+datetime.isocalendar() - Return tuple (ISO year, ISO week number, ISO weekday).
+
+## Timedelta
+
+timedelta(days=0, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0) - Represent duration between dates/times.
+datetime + timedelta - Add duration to datetime.
+datetime - datetime - Return timedelta difference.
+
+## time module
+
+time.time() - Return current time as seconds since epoch.
+time.sleep(seconds) - Pause execution for given number of seconds.
+time.ctime([seconds]) - Convert timestamp to readable string.
+time.localtime([seconds]) - Convert timestamp to struct_time in local timezone.
+time.gmtime([seconds]) - Convert timestamp to struct_time in UTC.
+time.perf_counter() - Return high-resolution timer for performance measurement.
+
+## strftime / strptime format codes
+
+%Y Year with century (e.g., 2023).
+%y Year without century (e.g., 23).
+%m Month as zero-padded decimal number.
+%d Day of month as zero-padded decimal number.
+%H Hour (24-hour clock).
+%I Hour (12-hour clock).
+%M Minute.
+%S Second.
+%A Full weekday name.
+%a Abbreviated weekday name.
+%B Full month name.
+%b Abbreviated month name.
+%p AM or PM.
+
+
+------------------------
+# Random
+------------------------
+
+random.randint(a, b) - Return a random integer N such that a <= N <= b (inclusive).
+random.random() - Return a random float N such that 0.0 <= N < 1.0.
+random.uniform(a, b) - Return a random float N such that a <= N <= b.
+random.randrange(start, stop[, step]) - Return a random integer from range(start, stop, step). Stop is exclusive.
+random.choice(seq) - Return a random element from a non-empty sequence.
+random.choices(population, weights=None, cum_weights=None, k=1) - Return a list of k elements chosen with replacement. Supports weighted probability.
+random.sample(population, k) - Return k unique elements chosen without replacement.
+random.shuffle(x) - Shuffle the list x in place. Returns None.
+random.seed(x) - Initialize the random number generator for reproducible results.
+random.getrandbits(k) - Return an integer with k random bits.
+random.gauss(mu, sigma) - Return a random float from a normal (Gaussian) distribution.
+random.expovariate(lambd) - Return a random float from an exponential distribution.
+
+
+------------------------
+# Math
+------------------------
+
+## Constants
+
+math.pi - Mathematical constant π (≈ 3.14159).
+math.e - Euler’s number (≈ 2.71828).
+math.tau - Tau constant, equal to 2π (≈ 6.28318).
+math.inf - Positive infinity.
+math.nan - Not a Number (NaN).
+
+## Rounding
+
+math.ceil(x) - Return the smallest integer >= x.
+math.floor(x) - Return the largest integer <= x.
+math.trunc(x) - Truncate fractional part of x (toward zero).
+
+## Trigonometry (radians)
+
+math.sin(x) - Return sine of x.
+math.cos(x) - Return cosine of x.
+math.tan(x) - Return tangent of x.
+math.asin(x) - Return arcsine of x.
+math.acos(x) - Return arccosine of x.
+math.atan(x) - Return arctangent of x.
+
+## Exponential & logarithmic
+
+math.exp(x) - Return e raised to the power x.
+math.log(x[, base]) - Return logarithm of x with given base (natural log if base not specified).
+
+## Power & root
+
+math.pow(x, y) - Return x raised to the power y (float result).
+math.sqrt(x) - Return square root of x.
+
+## Other
+
+math.fabs(x) - Return absolute value of x as float.
+math.factorial(x) - Return factorial of x (x must be non-negative integer).
+math.gcd(x, y) - Return greatest common divisor of x and y.
+
+
+------------------------
+# String formatting (f-strings)
+------------------------
+
+## Numbers
+
+f"{value:d}" - Format integer in decimal.
+f"{value:#x}" - Format integer in hexadecimal with prefix (0x).
+f"{value:#o}" - Format integer in octal with prefix (0o).
+f"{value:#b}" - Format integer in binary with prefix (0b).
+
+## Floats
+
+f"{value:.2f}" - Format float with 2 decimal places.
+f"{value:.0%}" - Format as percentage without decimals (value * 100).
+f"{value:<width.precision%}" - Format as percentage with width and precision.
+
+## Alignment (within width)
+
+f"{value:<width}" - Left align within given width.
+f"{value:>width}" - Right align within given width.
+f"{value:^width}" - Center align within given width.
+f"{value:=width}" - Align numbers with sign on the left and digits right-aligned.
+
+
+------------------------
+# Re — regex
+------------------------
+
+re.search(pattern, string[, flags]) - Search for the first match. Return Match or None.
+re.match(pattern, string[, flags]) - Match pattern only at the beginning of string.
+re.fullmatch(pattern, string[, flags]) - Match entire string against pattern.
+re.findall(pattern, string[, flags]) - Return list of all non-overlapping matches.
+re.finditer(pattern, string[, flags]) - Return iterator of Match objects for all matches.
+re.sub(pattern, repl, string[, count, flags]) - Replace matches with repl. Optional limit via count.
+re.split(pattern, string[, maxsplit, flags]) - Split string by pattern.
+
+## Match object
+
+match.group() - Return entire match.
+match.group(n) - Return group by index.
+match.group('name') - Return group by name.
+match.groups() - Return tuple of all groups.
+match.groupdict() - Return dict of named groups.
+match.start() - Return start index of match.
+match.end() - Return end index of match.
+
+## Groups in patterns
+
+(...) - Capture group by index.
+(?P<name>...) - Capture group by name.
+(?:...) - Non-capturing group.
+
+## Flags (modifiers)
+
+re.IGNORECASE (re.I) - Case-insensitive matching.
+re.MULTILINE (re.M) - ^ and $ match start/end of each line.
+re.DOTALL (re.S) - Dot matches newline as well.
+re.VERBOSE (re.X) - Allow whitespace and comments in pattern.
+re.ASCII (re.A) - Make \w, \d, etc. ASCII-only.
+re.UNICODE (re.U) - Unicode matching (default in Python 3).
+
+
+------------------------
+# File operations
+------------------------
+
+## open()
+
+fh = open(file, mode='r', encoding=None) - Open file and return file object.
+with open(file, mode, encoding='utf-8') as fh - Automatically handle file closing.
+
+Modes:
+'r' – read (file must exist)
+'w' – write (create or overwrite)
+'a' – append (write to end)
+'b' – binary mode
+'+' – read and write
+
+fh.read(size=-1) - Read file content (optionally limited by size).
+fh.readline() - Read one line.
+fh.readlines() - Read all lines as list.
+fh.write(data) - Write string to file.
+fh.seek(offset) - Move cursor to position.
+fh.tell() - Return current cursor position.
+fh.close() - Close file.
+
+## shutil (file operations)
+
+shutil.copy(src, dst) - Copy file.
+shutil.copytree(src, dst) - Copy directory recursively.
+shutil.move(src, dst) - Move file or directory.
+shutil.rmtree(path) - Remove directory recursively.
+shutil.disk_usage(path) - Return disk usage statistics.
+shutil.make_archive(base_name, format, root_dir) - Create archive (zip, tar, gztar, etc).
+shutil.unpack_archive(filename, extract_dir) - Extract archive.
+
+## pathlib.Path
+
+p = pathlib.Path(path) - Create path object.
+
+p.exists() - Check if path exists.
+p.is_file() - Check if file.
+p.is_dir() - Check if directory.
+p.read_text(encoding='utf-8') - Read text file.
+p.write_text(data, encoding='utf-8') - Write text file.
+p.read_bytes() - Read binary file.
+p.write_bytes(data) = Write binary file.
+p.name - File name.
+p.suffix - File extension.
+p.parent - Parent directory.
+p.with_name(name) - Return new path with changed name.
+p.with_suffix(ext) - Return new path with changed extension.
+p.rename(target) - Rename/move file.
+p.iterdir() - Iterate over directory contents.
+p.mkdir(parents=False, exist_ok=False) - Create directory.
+p.rmdir() - Remove empty directory.
+p.absolute() - Return absolute path.
+p.relative_to(base) - Return relative path.
+p / "subdir" / "file.txt" - Join paths.
+p.stat() - Return file metadata.
+p.stat().st_size - File size.
+p.stat().st_ctime - Creation time.
+p.stat().st_mtime - Modification time.
+
+
+------------------------
+# Strings
+------------------------
+
+str.encode(encoding='utf-8', errors='strict') - Convert string to bytes.
+bytes.decode(encoding='utf-8', errors='strict') - Convert bytes to string.
+
+errors:
+'strict' – raise error
+'ignore' – skip invalid data
+'replace' – replace invalid data
+
+bytes - Immutable sequence of bytes (0–255).
+bytearray - Mutable sequence of bytes.
+bytes(iterable) - Create bytes from integers (0–255).
+ord(char) - Return Unicode code point of character.
+chr(code) - Return character from Unicode code.
+str.lower() - Convert to lowercase.
+str.casefold() - Aggressive lowercase for case-insensitive comparison (Unicode-safe).
+
+
+------------------------
+# sys
+------------------------
+
+sys.argv - List of CLI arguments (all strings).
+sys.exit([code]) - Exit program.
+sys.path - List of module search paths.
+sys.modules - Dict of loaded modules.
+sys.modules.keys() - Return loaded module names.
+sys.builtin_module_names - Tuple of built-in modules.
+sys.version - Python version string.
+sys.platform - Platform identifier.
+
+------------------------
+# pip
+------------------------
+
+python -m pip list - List installed packages.
+pip list - List installed packages.
+pip install package - Install package.
+pip install package==version - Install specific version.
+pip install package>=version - Install version or newer.
+pip install package<=version - Install version or older.
+pip uninstall package - Remove package.
+pip freeze - List installed packages with versions.
+pip freeze > requirements.txt - Save dependencies.
+pip install -r requirements.txt - Install from file.
+
+------------------------
+# env
+------------------------
+
+python -m venv <dir> - Create virtual environment.
+<dir>\Scripts\activate.bat - activate (Windows CMD)
+<dir>\Scripts\Activate.ps1 - activate (PowerShell)
+source <dir>/bin/activate - activate (Linux / macOS)
+deactivate - Deactivate environment.
+
+
+------------------------
+# collections.namedtuple
+------------------------
+
+obj = collections.namedtuple(typename, field_names) - Create tuple subclass with named fields.
+
+obj.field - Access namedtuple value by field name.
+obj[index] - Access namedtuple value by index.
+
+------------------------
+# collections.Counter
+------------------------
+
+counter = Counter(iterable) - Count hashable items from iterable.
+
+counter[item] - Return count for item.
+counter.items() - Return item/count pairs.
+counter.most_common() - Return all items sorted by count descending.
+counter.most_common(n) - Return n most common items.
+
+------------------------
+# collections.defaultdict
+------------------------
+
+defaultdict(default_factory) - Create dict that generates default value for missing keys.
+defaultdict(list) - Create empty list for missing key.
+defaultdict(int) - Create 0 for missing key.
+defaultdict(set) - Create empty set for missing key.
+
+------------------------
+# queue - Stack with list
+------------------------
+stack = []
+
+stack.append(x) - Push item to stack.
+stack.pop() - Pop last item from stack.
+stack[-1] - Peek top item.
+not stack - Check if stack is empty.
+
+------------------------
+# queue - Stack with collections.deque
+------------------------
+
+queue = deque() - Create double-ended queue.
+queue = deque(iterable) - Create deque from iterable.
+queue = deque(maxlen=n) - Create deque with fixed maximum length.
+
+queue.append(item) - Add item to right side.
+queue.appendleft(item) - Add item to left side.
+queue.pop() - Remove and return item from right side.
+queue.popleft() - Remove and return item from left side.
+queue[0] - Access first item.
+queue[-1] - Access last item.
+len(queue) - Return queue size.
+
+------------------------
+# decimal.Decimal
+------------------------
+
+Decimal("0.1") - Create exact decimal number from string.
+Decimal("0.1") + Decimal("0.2") - Perform exact decimal arithmetic.
+getcontext().prec = n - Set decimal precision to n significant digits.
+number.quantize(Decimal("0.00")) - Round Decimal to two decimal places.
+number.quantize(Decimal("0.00"), rounding=ROUND_DOWN) - Round Decimal using specified rounding mode.
+
+## Decimal rounding modes
+
+ROUND_FLOOR - Round toward negative infinity.
+ROUND_CEILING - Round toward positive infinity.
+ROUND_HALF_DOWN - Round to nearest; ties go down.
+ROUND_HALF_UP - Round to nearest; ties go up.
+ROUND_UP - Round away from zero.
+ROUND_DOWN - Round toward zero.
+ROUND_HALF_EVEN - Round to nearest; ties go to even number.
+
+------------------------
+# Generators
+------------------------
+
+generator function - Function containing yield.
+lazy evaluation - Generate values one by one without storing full sequence.
+exception StopIteration - Raised when generator has no more values.
+"for item in generator" - Iterate generator safely until exhausted.
+
+yield value - Return value and pause generator state.
+next(generator) - Return next generated value.
+
+
+------------------------
+# First-class functions
+------------------------
+
+function_ref = function_name - Store function reference in variable.
+function_ref() - Call function through variable.
+func(arg_func) - Pass function as argument.
+return inner_func - Return function from another function.
+dict[str, Callable] - Store functions in dictionary.
+Callable[[arg_types], return_type] - Type hint for callable object.
+
+------------------------
+# Closures
+# functions that remembers variables from outer lexical scope.
+------------------------
+
+def outer(): ... return inner - Create closure.
+inner_func = outer(...) - Store returned inner function.
+nonlocal variable - Allow inner function to modify variable from outer scope.
+
+------------------------
+# Currying
+------------------------
+
+def func(a): return inner - Convert multi-argument logic into chain of functions.
+curried = func(a) - Create specialized function with fixed first argument.
+curried(b) - Call specialized function with remaining argument.
+
+------------------------
+# Decorators
+------------------------
+
+decorator(func) - Function that receives function and returns wrapped function.
+@decorator - Apply decorator to function.
+wrapper(*args, **kwargs) - Common wrapper signature for flexible decorators.
+return func(*args, **kwargs) - Call original function inside wrapper.
+functools.wraps(func) - Preserve original function metadata.
+func.**name** - Function name metadata.
+
+------------------------
+# List comprehensions
+------------------------
+
+[new_item for item in iterable] - Create list from iterable.
+[new_item for item in iterable if condition] - Create filtered list.
+[x ** 2 for x in numbers] - Create list of transformed values.
+
+------------------------
+# Set comprehensions
+------------------------
+
+{new_item for item in iterable} - Create set from iterable.
+{new_item for item in iterable if condition} - Create filtered set.
+
+------------------------
+# Dictionary comprehensions
+------------------------
+
+{key: value for item in iterable} - Create dictionary from iterable.
+{key: value for item in iterable if condition} - Create filtered dictionary.
+
+------------------------
+# lambda
+------------------------
+
+lambda arguments: expression - Create anonymous one-expression function.
+lambda x: x * x - One-argument lambda.
+lambda x, y: x + y - Multi-argument lambda.
+
+------------------------
+# map
+------------------------
+
+map(function, iterable) - Apply function to each iterable item.
+map(function, iterable1, iterable2) - Apply function to items from multiple iterables.
+list(map(...)) - Convert map iterator to list.
+
+------------------------
+# filter
+------------------------
+
+filter(function, iterable) - Keep items for which function returns True.
+list(filter(...)) - Convert filter iterator to list.
+
+------------------------
+# zip
+------------------------
+
+zip(iterable1, iterable2) - Iterate paired items from multiple iterables.
+[x + y for x, y in zip(a, b)] - Combine values from two iterables.
+
+------------------------
+# any
+------------------------
+
+any(iterable) - Return True if at least one item is truthy.
+any(condition for item in iterable) - Return True if at least one item matches condition.
+
+------------------------
+# all
+------------------------
+
+all(iterable) - Return True if all items are truthy.
+all(condition for item in iterable) - Return True if all items match condition.
+all([]) - Returns True for empty iterable.
