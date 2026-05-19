@@ -355,7 +355,7 @@ deactivate
 
 ### `namedtuple` Create tuple subclass with named fields.
 
-```
+```python
 from collections import namedtuple
 
 obj = namedtuple(typename, field_names)
@@ -366,7 +366,7 @@ obj = namedtuple(typename, field_names)
 
 ### `Counter` Count hashable items from iterable.
 
-```
+```python
 from collections import Counter
 
 counter = Counter(iterable)
@@ -379,7 +379,7 @@ counter = Counter(iterable)
 
 ### `defaultdict` Dictionary with default values
 
-```
+```python
 from collections import defaultdict
 ```
 
@@ -388,6 +388,77 @@ from collections import defaultdict
 - `defaultdict(int)` Create 0 for missing key.
 - `defaultdict(set)` Create empty set for missing key.
 
+### `UserDict` Base wrapper for custom dictionary behavior.
+
+Create custom dictionary class.
+Recommended instead of inheriting directly from dict.
+
+```python
+from collections import UserDict
+
+class CustomDict(UserDict):
+    ...
+
+custom_dict = CustomDict({...})
+```
+- `self.data` Internal real dictionary storage.
+- `self.data[key] = value` Write value directly to wrapped dictionary.
+- `self.get(key)` Safe dictionary value access.
+
+### `UserList` Base wrapper for custom list behavior.
+
+Create custom list class.
+Recommended instead of inheriting directly from list.
+
+```python
+from collections import UserList
+
+class CustomList(UserList):
+    ...
+
+custom_list = CustomList([])
+```
+
+- `self.data` Internal real list storage.
+- `self.data.append(value)` Append directly to wrapped list.
+- `self.data.extend(value)` Extend directly to wrapped list.
+- `self.data.remove(value)` Remove directly to wrapped list.
+
+### `UserString` Base wrapper for custom string behavior.
+
+Create custom string class.
+Recommended instead of inheriting directly from str.
+
+```python
+from collections import UserString
+
+class CustomString(UserString):
+    ...
+
+custom_string = CustomString("...")
+```
+
+- `self.data` Internal real string storage.
+
+
+#### Advantages over builtin inheritance
+
+| Compare           |                                            |
+|-------------------|--------------------------------------------|
+| UserDict vs dict  | Safer customization.                       |
+| UserList vs list  | Predictable behavior override.             |
+| UserString vs str | Avoid immutable string inheritance issues. |
+
+#### Important notes
+
+UserDict / UserList / UserString store real data in self.data
+Main extension point for custom behavior.
+
+Prefer collections wrappers over direct builtin inheritance
+Especially for complex overridden behavior.
+
+UserString is mutable through self.data
+Unlike normal immutable str.
 
 # Stack, queue 
 
@@ -395,7 +466,7 @@ from collections import defaultdict
 
 ### list
 
-```
+```python
 stack = []
 ```
 
@@ -406,19 +477,19 @@ stack = []
 
 ### collections.deque
 
-```
+```python
 from collections import deque
 ```
 #### Create double-ended queue.
-```
+```python
 queue = deque()
 ```
 #### Create deque from iterable.
-```
+```python
 queue = deque(iterable)
 ```
 #### Create deque with fixed maximum length.
-```
+```python
 queue = deque(maxlen=n)
 ```
 
@@ -436,27 +507,27 @@ queue = deque(maxlen=n)
 ---
 
 - Create exact decimal number from string.
-```
+```python
 number = decimal.Decimal("0.1")
 ```
 
 - Perform exact decimal arithmetic.
-```
+```python
 number = decimal.Decimal("0.1") + decimal.Decimal("0.2")
 ```
 
 - Set decimal precision to `n` significant digits.
-```
+```python
 decimal.getcontext().prec = n
 ```
 
 - Round Decimal to two decimal places.
-```
+```python
 number.quantize(decimal.Decimal("0.00"))
 ```
 
 - Round Decimal using specified rounding mode.
-```
+```python
 number.quantize(decimal.Decimal("0.00"), rounding=ROUND_DOWN)
 ```
 
@@ -502,20 +573,20 @@ number.quantize(decimal.Decimal("0.00"), rounding=ROUND_DOWN)
 ---
 
 - Create closure.
-```
+```python
 def outer(): 
     def inner(): 
         ... 
-return inner
+    return inner
 ```
 
 - Store returned inner function.
-```
+```python
 inner_func = outer(...)
 ```
 
 - Allow inner function to modify variable from outer scope.
-```
+```python
 nonlocal variable
 ```
 
@@ -524,17 +595,17 @@ nonlocal variable
 ---
 
 - Convert multi-argument logic into chain of functions.
-```
+```python
 def func(a): return inner
 ```
 
 - Create specialized function with fixed first argument.
-```
+```python
 curried = func(a)
 ```
 
 - Call specialized function with remaining argument.
-```
+```python
 curried(b)
 ```
 
@@ -615,3 +686,230 @@ curried(b)
 - `all(iterable)` Return True if all items are truthy.
 - `all(condition for item in iterable)` Return True if all items match condition.
 - `all([])` Returns True for empty iterable.
+
+
+# Magic methods `__method__`
+
+---
+
+- `a + b` = `a.__add__(b)`
+- `print(obj)` = `obj.__str__()`
+- `repr(obj)` = `obj.__repr__()`
+- `obj[key]` = `obj.__getitem__(key)`
+- `obj[key] = value` = `obj.__setitem__(key, value)`
+
+# Object lifecycle
+
+__init__(self, ...)
+Object initialization method.
+
+self.attribute = value
+Create instance attribute.
+
+self.method()
+Call internal methods during initialization.
+
+Initialization logic
+Validation, preprocessing, derived fields, logging.
+
+# String representation
+
+__str__(self)
+Human-readable object representation.
+
+__repr__(self)
+Official/debug representation.
+
+print(obj)
+Uses __str__().
+
+str(obj)
+Uses __str__().
+
+repr(obj)
+Uses __repr__().
+
+Interactive console
+Usually displays __repr__() result.
+
+Fallback behavior
+If __str__ is absent, Python uses __repr__.
+
+# Good __repr__ practice
+
+__repr__
+Should ideally recreate object.
+
+eval(repr(obj))
+Can reconstruct object if representation is valid Python code.
+
+return f"Point(x={self.x}, y={self.y})"
+Typical constructor-like representation.
+
+eval()
+Dangerous with untrusted input.
+
+# Container behavior
+
+__getitem__(self, key)
+Customize object[key] access.
+
+__setitem__(self, key, value)
+Customize object[key] assignment.
+
+self.__data
+Private internal storage convention.
+
+Custom containers
+Can mimic dict/list behavior.
+
+# UserList / UserDict
+
+UserList
+Wrapper for custom list behavior.
+
+UserDict
+Wrapper for custom dictionary behavior.
+
+super().__setitem__(...)
+Reuse base container implementation.
+
+self.data
+Internal wrapped storage.
+
+Prefer UserList/UserDict
+Instead of direct list/dict inheritance.
+
+#### Operator overloading
+
+Operator overloading
+Redefine operator behavior for custom classes.
+
+#### Math operators
+
+| method                      | operator    |
+|-----------------------------|-------------|
+| `__add__(self, other)`      | `+`         | 
+| `__sub__(self, other)`      | `-`         | 
+| `__mul__(self, other)`      | `*`         | 
+| `__rmul__(self, other)`     | Reverse `*` | 
+| `__truediv__(self, other)`  | `/`         | 
+| `__floordiv__(self, other)` | `//`        | 
+| `__mod__(self, other)`      | `%`         | 
+| `__pow__(self, other)`      | `**`        | 
+
+#### Comparison operators
+
+| method                | operator |
+|-----------------------|----------|
+| `__eq__(self, other)` | `==`     |         
+| `__ne__(self, other)` | `!=`     | 
+| `__lt__(self, other)` | `<`      |  
+| `__le__(self, other)` | `<=`     | 
+| `__gt__(self, other)` | `>`      |  
+| `__ge__(self, other)` | `>=`     | 
+
+Correct unsupported comparison behavior.
+```python
+return NotImplemented
+```
+
+# @property
+
+`@property`
+Getter. Create accessed like attribute.
+Controls read access.
+
+@field.setter
+Setter. Create for same property.
+Controls write access and validation.
+
+self._field
+Protected attribute convention.
+
+self.__field
+Private attribute convention.
+
+# Property validation pattern
+
+self.__value = None
+Initialize internal field safely.
+
+self.value = value
+Use setter inside __init__.
+
+Setter validation
+Single centralized validation point.
+
+raise ValueError(...)
+Reject invalid assignments.
+
+# Encapsulation
+
+Encapsulation
+Hide internal implementation details.
+
+Properties
+Expose controlled public API.
+
+Internal fields
+Should not be modified directly externally.
+
+# Static methods
+
+@staticmethod
+Method without self or cls.
+
+Static method
+Utility/helper related to class.
+
+Class.method(...)
+Preferred static method call style.
+
+No instance state access
+Cannot use self.
+
+# Class methods
+
+@classmethod
+Method receiving cls automatically.
+
+cls
+Current class reference.
+
+return cls(...)
+Factory constructor pattern.
+
+Alternative constructor
+Common classmethod usage.
+
+from_string(cls, value)
+Typical parsing factory pattern.
+
+# staticmethod vs classmethod
+
+`@staticmethod`
+No access to class or instance state.
+Utility/helper functions.
+
+`@classmethod`
+Access to class via cls.
+Factories, alternate constructors, polymorphic creation.
+
+# OOP design notes
+
+Magic methods
+Integrate custom classes with Python syntax.
+
+Operator overloading
+Improves readability and expressiveness.
+
+@property
+Cleaner than explicit get_/set_ methods.
+
+UserList/UserDict
+Safer than inheriting builtin containers directly.
+
+NotImplemented
+Preferred over manual TypeError in comparisons.
+::: 
